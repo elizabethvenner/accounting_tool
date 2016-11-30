@@ -1,3 +1,6 @@
+require_relative 'transaction'
+require_relative 'statement'
+
 class Account
 
   attr_reader :transactions
@@ -6,19 +9,18 @@ class Account
     @transactions = []
   end
 
-  def deposit(date, amount)
-    hash = {}
-    hash[date.to_sym] = amount
-    @transactions << hash
+  def deposit(type = 'deposit', date, amount)
+    transaction = Transaction.new(type = 'deposit', date, amount)
+    @transactions << transaction.summary
   end
 
-  def withdraw(date, amount)
-    hash = {}
-    hash[date.to_sym] = amount * -1
-    @transactions << hash
+  def withdraw(type = 'withdrawal',date, amount)
+    transaction = Transaction.new(type = 'withdrawal', date, amount)
+    @transactions << transaction.summary
   end
 
-  def print
-    puts @transactions
+  def print_statement(transactions = @transactions)
+    statement = Statement.new(transactions=@transactions)
+    statement.print_transactions
   end
 end
